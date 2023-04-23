@@ -1,5 +1,5 @@
-name: seoul_data
-description: Seoul_data
+name: wbex2
+description: wbex2
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -35,6 +35,13 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  webviewx: ^0.2.2
+  geolocator: ^9.0.2
+  location: ^4.4.0
+  dio: ^5.1.1
+  http: ^0.13.5
+  xml: ^6.2.2
+  font_awesome_flutter: ^10.4.0
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +65,8 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+  assets:
+    - assets/
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
@@ -68,7 +77,18 @@ flutter:
 
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
+  fonts:
+    - family: Pacifico
+      fonts:
+        - asset: font/Pacifico-Regular.ttf
 
+    - family: Jeju
+      fonts:
+        - asset: font/jejuMyeongjo.ttf
+
+    - family: SCDream
+      fonts:
+        - asset: font/SCDream4.otf
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a

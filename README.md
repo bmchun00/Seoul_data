@@ -1,6 +1,6 @@
-# seoul_data
+# wbex2
 
-Seoul_data
+wbex2
 
 ## Getting Started
 
