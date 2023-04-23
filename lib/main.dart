@@ -126,18 +126,21 @@ class _MainPage extends State<MainPage>{
                   Container(
                     width: 200,
                     height: 50,
-                    padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          height: 5,
+                          height: 7,
                         ),
                         Row(
                           children: [
                             Icon(Icons.pin_drop_outlined, size: 10, color: Colors.grey,),
                             Text(" " + data[key]['sh_addr'].substring(6,9), style: TextStyle(fontFamily: "SCDream", color: Colors.grey, fontSize: 10),),
                           ],
+                        ),
+                        SizedBox(
+                          height: 3,
                         ),
                         Text(data[key]['sh_name'], style: TextStyle(fontFamily: 'SCDream', fontSize: 15, fontWeight: FontWeight.bold), maxLines: 1, overflow: TextOverflow.ellipsis,),
                       ],
