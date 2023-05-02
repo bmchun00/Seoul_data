@@ -1,6 +1,8 @@
+import 'package:firebase/firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:wbex2/detailPage.dart';
 import 'package:wbex2/pageRouteAnimation.dart';
+
 
 class ListPage extends StatefulWidget{
   List<dynamic> data;
@@ -14,6 +16,7 @@ class _ListPage extends State<ListPage>{
   List<dynamic> data;
   _ListPage(this.data, this.categoryName);
   String categoryName;
+  String selDist = '';
 
   String getCorrectString(String? toRefine){
     if(toRefine == null){
@@ -76,8 +79,7 @@ class _ListPage extends State<ListPage>{
     );
   }
 
-  @override
-  Widget build(BuildContext context){
+  Widget getSliver(){
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -91,6 +93,28 @@ class _ListPage extends State<ListPage>{
           SliverList(delegate: SliverChildListDelegate(List.generate(data!.length, (idx) => getCard(data![idx]))))
         ],
       ),
+    );
+  }
+
+  Widget getEmptyView(){
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0.0,
+        title : Text(categoryName, style: TextStyle(fontFamily: "SCDream"),),
+      ),
+      body: Center(
+        child: Container(
+          child: Text("😥 검색된 결과가 없습니다.", style: TextStyle(fontFamily: "SCDream", fontSize: 20, ),),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      body: data.isEmpty? getEmptyView() : getSliver()
     );
   }
 

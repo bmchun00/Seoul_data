@@ -1,17 +1,25 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:wbex2/pageRouteAnimation.dart';
 import 'detailPage.dart';
 import 'listPage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
+
+String userName="하얀구름095";
+String userLocation="성북구";
+
+final districts = ['전체','강남구','강동구','강북구','강서구','관악구','광진구','구로구','금천구','노원구','도봉구','동대문구','동작구','마포구','서대문구','서초구','성동구','성북구','송파구','양천구','영등포구','용산구','은평구','종로구','중구','중랑구'];
+
 
 List<Map> categoryList = [
   {"categoryNum" : "001", "categoryName" : "한식", "categoryIcon" : Icons.rice_bowl},
   {"categoryNum" : "002", "categoryName" : "중식", "categoryIcon" : Icons.ramen_dining},
   {"categoryNum" : "003", "categoryName" : "일식", "categoryIcon" : Icons.set_meal},
-  {"categoryNum" : "004", "categoryName" : "기타 외식", "categoryIcon" : Icons.local_cafe},
+  {"categoryNum" : "004", "categoryName" : "외식", "categoryIcon" : Icons.local_cafe},
   {"categoryNum" : "005", "categoryName" : "미용", "categoryIcon" : Icons.store},
   {"categoryNum" : "006", "categoryName" : "사우나", "categoryIcon" : Icons.hot_tub},
   {"categoryNum" : "007", "categoryName" : "세탁", "categoryIcon" : Icons.local_laundry_service},
@@ -19,8 +27,9 @@ List<Map> categoryList = [
   {"categoryNum" : "009", "categoryName" : "영화", "categoryIcon" : Icons.local_movies}, // vtr대여와 통합 (010)
   {"categoryNum" : "011", "categoryName" : "노래방", "categoryIcon" : Icons.mic_external_on},
   {"categoryNum" : "012", "categoryName" : "스포츠", "categoryIcon" : Icons.sports_gymnastics},
-  {"categoryNum" : "013", "categoryName" : "기타 서비스", "categoryIcon" : Icons.more_horiz},
+  {"categoryNum" : "013", "categoryName" : "기타", "categoryIcon" : Icons.more_horiz},
 ];
+
 
 const MaterialColor white = const MaterialColor(
   0xFFFFFFFF,
@@ -65,7 +74,8 @@ List<dynamic> sortDataWithParams(String code, String location, List<dynamic> dat
   return sortedList;
 }
 
-void main(){
+Future<void> main() async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
@@ -89,6 +99,9 @@ class MainPage extends StatefulWidget{
 }
 
 class _MainPage extends State<MainPage>{
+  TextEditingController? searchController;
+  List sdata = [];
+
   void getData() async {
     String uri = 'http://bmchun00.github.io/assets/seoul.json';
     http.Response response = await http.get(Uri.parse(uri));
@@ -164,16 +177,114 @@ class _MainPage extends State<MainPage>{
           Container(
             child: Column(
               children: [
-                SizedBox(height: 30,),
+                SizedBox(height: 40,),
                 Text("SEOUL BARGAIN", style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Jeju', fontSize: 25),),
                 SizedBox(height: 5,),
                 Text("Find the perfect price", style: TextStyle(fontWeight: FontWeight.w200, fontFamily: 'Jeju', fontSize: 15),),
+                SizedBox(height: 5,),
+                DropdownButtonHideUnderline(
+                    child: DropdownButton2(
+                      buttonStyleData: ButtonStyleData(
+                        height: 40,
+                        width: 100,
+                        padding: const EdgeInsets.only(left: 16, right: 16),
+
+                      ),
+                      alignment: Alignment.center,
+                      style: TextStyle(fontFamily: "SCDream"),
+                      isExpanded: true,
+                      hint: Text(
+                        'Select Item',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Theme.of(context).hintColor,
+                        ),
+                      ),
+                      items: districts
+                          .map((item) => DropdownMenuItem(
+                        value: item,
+                        child: Text(
+                          item,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontFamily: "SCDream",
+                          ),
+                        ),
+                      ))
+                          .toList(),
+                      value: userLocation,
+                      onChanged: (value) {
+                        setState(() {
+                          userLocation = value as String;
+                          sdata = sortDataWithParams('000', userLocation, data);
+                        });
+                      },
+                      dropdownStyleData: const DropdownStyleData(
+                        maxHeight: 200,
+                      ),
+                      menuItemStyleData: const MenuItemStyleData(
+                        height: 40,
+                      ),
+                      dropdownSearchData: DropdownSearchData(
+                        searchController: searchController,
+                        searchInnerWidgetHeight: 50,
+                        searchInnerWidget: Container(
+                          height: 50,
+                          padding: const EdgeInsets.only(
+                            top: 8,
+                            bottom: 4,
+                            right: 8,
+                            left: 8,
+                          ),
+                          child: TextFormField(
+                            style: TextStyle(fontFamily: "SCDream"),
+                            expands: true,
+                            maxLines: null,
+                            controller: searchController,
+                            decoration: InputDecoration(
+                              isDense: true,
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 8,
+                              ),
+                              hintText: '검색',
+                              hintStyle: const TextStyle(fontSize: 12),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(0.0),
+                                borderSide: BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(0.0),
+                                borderSide: BorderSide(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        searchMatchFn: (item, searchValue) {
+                          return (item.value.toString().contains(searchValue));
+                        },
+                      ),
+                      //This to clear the search value when you close the menu
+                      onMenuStateChange: (isOpen) {
+                        if (!isOpen) {
+                          searchController!.clear();
+                        }
+                      },
+                    ),
+
+                ),
+                SizedBox(height: 30,),
+
               ],
             ),
           ),
 
           GridView.count(
-            crossAxisCount: 4,
+            crossAxisCount: 6,
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             children: List.generate(categoryList.length, (index) {
@@ -187,7 +298,7 @@ class _MainPage extends State<MainPage>{
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Row(),
-                        Icon(categoryList[index]['categoryIcon'], color: Colors.black,),
+                        Icon(categoryList[index]['categoryIcon'], color: Colors.black, size: 30,),
                         Text(categoryList[index]['categoryName'], style: TextStyle(fontFamily: "SCDream", color: Colors.black, fontSize: 10),),
                       ],
                     ),
@@ -197,7 +308,7 @@ class _MainPage extends State<MainPage>{
             }),
           ),
           Container(
-            padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
+            padding: EdgeInsets.fromLTRB(8, 20, 8, 0),
             child: Row(
               children: [
                 Icon(Icons.stars_sharp, color: Colors.black, size: 23,),
@@ -213,7 +324,7 @@ class _MainPage extends State<MainPage>{
           ),
           SizedBox(height: 10,),
           Container(
-            padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
+            padding: EdgeInsets.fromLTRB(8, 20, 8, 0),
             child: Row(
               children: [
                 Icon(Icons.pin_drop_outlined, color: Colors.black, size: 23,),
@@ -235,6 +346,7 @@ class _MainPage extends State<MainPage>{
 
   @override
   void initState() {
+    searchController = TextEditingController();
     _onload = false;
     super.initState();
     getData();

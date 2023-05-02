@@ -41,6 +41,7 @@ class _DetailMapPage extends State<DetailMapPage>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         title: Text("상세 지도 보기", style: TextStyle(fontFamily: "SCDream"),),
       ),
       body: Container(

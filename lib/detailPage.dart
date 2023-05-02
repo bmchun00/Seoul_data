@@ -1,8 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:wbex2/html.dart';
 import 'package:wbex2/pageRouteAnimation.dart';
+import 'package:wbex2/reviewPage.dart';
 import 'package:webviewx/webviewx.dart';
 import 'detailMapPage.dart';
 import 'package:http/http.dart' as http;
@@ -112,6 +112,29 @@ class _DetailPage extends State<DetailPage>{
                       ))
                     ],
                   ),
+                  InkWell(
+                    onTap: (){
+                      Navigator.of(context).push(bottomUpRoute(ReviewPage(data['sh_name'], data['sh_id'], data['sh_photo'])));
+                    },
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                      height: 30,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1,
+                          color: Colors.black,
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.message_sharp, color: Colors.black,size: 18,),
+                          Text(" 리뷰", style: TextStyle(color: Colors.black, fontFamily: "SCDream"),)
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -194,10 +217,9 @@ class _DetailPage extends State<DetailPage>{
               ),
             ),
             Container(
-              padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
+              padding: EdgeInsets.fromLTRB(8, 0, 8, 10),
               child: Text(getCorrectString(data['sh_phone']), style: TextStyle(color: Colors.black87, fontFamily: "SCDream")),
             ),
-            SizedBox(height: 1000,)
           ]),
           ),
         ],

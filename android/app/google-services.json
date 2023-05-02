@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "713279102893",
+    "project_id": "seouldata",
+    "storage_bucket": "seouldata.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:713279102893:android:a647c683fe02f154e84b24",
+        "android_client_info": {
+          "package_name": "com.example.wbex2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "713279102893-rvmfequ741ssuea0h2kopi0vpgg481b3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3bxfsHZPzYmTago1sDANx8DVIEsammBg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "713279102893-rvmfequ741ssuea0h2kopi0vpgg481b3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
