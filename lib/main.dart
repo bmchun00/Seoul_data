@@ -47,10 +47,11 @@ const MaterialColor white = const MaterialColor(
   },
 );
 
-List<dynamic> data = [];
+List<dynamic> fixedData = [];
 bool _onload = false;
 
 List<dynamic> sortDataWithParams(String code, String location, List<dynamic> data){
+  location = location.substring(0,3);
   List<dynamic> sortedList = [];
   bool codeVerify = false;
   bool locationVerify = false;
@@ -100,21 +101,25 @@ class MainPage extends StatefulWidget{
 
 class _MainPage extends State<MainPage>{
   TextEditingController? searchController;
-  List sdata = [];
+  List<dynamic> data = [];
 
   void getData() async {
     String uri = 'http://bmchun00.github.io/assets/seoul.json';
     http.Response response = await http.get(Uri.parse(uri));
     if (response.statusCode == 200) {
-      data = jsonDecode(response.body)['DATA'];
+      fixedData = jsonDecode(response.body)['DATA'];
     }
     setState(() {
       _onload = true;
+      data = sortDataWithParams('000', userLocation == "전체" ? "ALL" : userLocation, fixedData);
     });
   }
 
 
   List<Widget> getRandomCard(int times){
+    if(data.isEmpty){
+      return [Text("")];
+    }
     List<Widget> toRet = [];
     for(int i = 0; i<times; i++){
       int key = Random().nextInt(data.length);
@@ -185,8 +190,8 @@ class _MainPage extends State<MainPage>{
                 DropdownButtonHideUnderline(
                     child: DropdownButton2(
                       buttonStyleData: ButtonStyleData(
-                        height: 40,
-                        width: 100,
+                        height: 30,
+                        width: 110,
                         padding: const EdgeInsets.only(left: 16, right: 16),
 
                       ),
@@ -216,7 +221,7 @@ class _MainPage extends State<MainPage>{
                       onChanged: (value) {
                         setState(() {
                           userLocation = value as String;
-                          sdata = sortDataWithParams('000', userLocation, data);
+                          data = sortDataWithParams('000', userLocation == "전체" ? "ALL" : userLocation, fixedData);
                         });
                       },
                       dropdownStyleData: const DropdownStyleData(
@@ -291,7 +296,7 @@ class _MainPage extends State<MainPage>{
               return Center(
                 child: InkWell(
                   onTap: (){
-                    Navigator.of(context).push(fadeRoute(ListPage(sortDataWithParams(categoryList[index]['categoryNum'], 'ALL', data), categoryList[index]['categoryName']),200));
+                    Navigator.of(context).push(fadeRoute(ListPage(sortDataWithParams(categoryList[index]['categoryNum'], userLocation, fixedData), categoryList[index]['categoryName'],categoryList[index]['categoryNum'],userLocation),200));
                   },
                   child: Container(
                     child: Column(

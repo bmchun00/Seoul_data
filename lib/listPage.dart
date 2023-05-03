@@ -1,22 +1,30 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase/firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:wbex2/detailPage.dart';
 import 'package:wbex2/pageRouteAnimation.dart';
 
+import 'main.dart';
+
 
 class ListPage extends StatefulWidget{
   List<dynamic> data;
-  ListPage(this.data, this.categoryName);
+  ListPage(this.data, this.categoryName, this.categoryNum, this.loc);
   String categoryName;
+  String categoryNum;
+  String loc;
 
-  State<ListPage> createState ()=> _ListPage(data,categoryName);
+  State<ListPage> createState ()=> _ListPage(data,categoryName,categoryNum,loc);
 }
 
 class _ListPage extends State<ListPage>{
-  List<dynamic> data;
-  _ListPage(this.data, this.categoryName);
+  List<dynamic> listData;
+  _ListPage(this.listData, this.categoryName, this.categoryNum, this.loc);
   String categoryName;
+  String categoryNum;
   String selDist = '';
+  String loc;
+  TextEditingController searchController = TextEditingController();
 
   String getCorrectString(String? toRefine){
     if(toRefine == null){
@@ -87,10 +95,109 @@ class _ListPage extends State<ListPage>{
             toolbarHeight: 50.0,
             backgroundColor: Colors.white,
             elevation: 0.0,
-            title: Text(categoryName, style: TextStyle(fontFamily: "SCDream"),),
+            title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+                children:[
+              Text(categoryName+" | ", style: TextStyle(fontFamily: "SCDream", fontSize: 14),),
+              DropdownButtonHideUnderline(
+                child: DropdownButton2(
+                  buttonStyleData: ButtonStyleData(
+                    height: 30,
+                    width: 120,
+                    padding: const EdgeInsets.only(left: 0, right: 40),
+
+                  ),
+                  alignment: Alignment.center,
+                  style: TextStyle(fontFamily: "SCDream"),
+                  isExpanded: true,
+                  hint: Text(
+                    'Select Item',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Theme.of(context).hintColor,
+                    ),
+                  ),
+                  items: districts
+                      .map((item) => DropdownMenuItem(
+                    value: item,
+                    child: Text(
+                      item,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontFamily: "SCDream",
+                      ),
+                    ),
+                  ))
+                      .toList(),
+                  value: loc,
+                  onChanged: (value) {
+                    setState(() {
+                      loc = value as String;
+                      listData = sortDataWithParams(categoryNum, loc == "전체" ? "ALL" : loc, fixedData);
+                    });
+                  },
+                  dropdownStyleData: const DropdownStyleData(
+                    maxHeight: 200,
+                  ),
+                  menuItemStyleData: const MenuItemStyleData(
+                    height: 40,
+                  ),
+                  dropdownSearchData: DropdownSearchData(
+                    searchController: searchController,
+                    searchInnerWidgetHeight: 50,
+                    searchInnerWidget: Container(
+                      height: 50,
+                      padding: const EdgeInsets.only(
+                        top: 8,
+                        bottom: 4,
+                        right: 8,
+                        left: 8,
+                      ),
+                      child: TextFormField(
+                        style: TextStyle(fontFamily: "SCDream"),
+                        expands: true,
+                        maxLines: null,
+                        controller: searchController,
+                        decoration: InputDecoration(
+                          isDense: true,
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 8,
+                          ),
+                          hintText: '검색',
+                          hintStyle: const TextStyle(fontSize: 12),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(0.0),
+                            borderSide: BorderSide(
+                              color: Colors.black,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(0.0),
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    searchMatchFn: (item, searchValue) {
+                      return (item.value.toString().contains(searchValue));
+                    },
+                  ),
+                  //This to clear the search value when you close the menu
+                  onMenuStateChange: (isOpen) {
+                    if (!isOpen) {
+                      searchController!.clear();
+                    }
+                  },
+                ),
+
+              ),
+            ]),
             floating: true,
           ),
-          SliverList(delegate: SliverChildListDelegate(List.generate(data!.length, (idx) => getCard(data![idx]))))
+          SliverList(delegate: SliverChildListDelegate(List.generate(listData!.length, (idx) => getCard(listData![idx]))))
         ],
       ),
     );
@@ -101,7 +208,104 @@ class _ListPage extends State<ListPage>{
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0.0,
-        title : Text(categoryName, style: TextStyle(fontFamily: "SCDream"),),
+        title : Row( children:[
+          Text(categoryName+" | ", style: TextStyle(fontFamily: "SCDream", fontSize: 14),),
+          DropdownButtonHideUnderline(
+            child: DropdownButton2(
+              buttonStyleData: ButtonStyleData(
+                height: 30,
+                width: 120,
+                padding: const EdgeInsets.only(left: 0, right: 40),
+
+              ),
+              alignment: Alignment.center,
+              style: TextStyle(fontFamily: "SCDream"),
+              isExpanded: true,
+              hint: Text(
+                'Select Item',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Theme.of(context).hintColor,
+                ),
+              ),
+              items: districts
+                  .map((item) => DropdownMenuItem(
+                value: item,
+                child: Text(
+                  item,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontFamily: "SCDream",
+                  ),
+                ),
+              ))
+                  .toList(),
+              value: loc,
+              onChanged: (value) {
+                setState(() {
+                  loc = value as String;
+                  listData = sortDataWithParams(categoryNum, loc == "전체" ? "ALL" : loc, fixedData);
+                });
+              },
+              dropdownStyleData: const DropdownStyleData(
+                maxHeight: 200,
+              ),
+              menuItemStyleData: const MenuItemStyleData(
+                height: 40,
+              ),
+              dropdownSearchData: DropdownSearchData(
+                searchController: searchController,
+                searchInnerWidgetHeight: 50,
+                searchInnerWidget: Container(
+                  height: 50,
+                  padding: const EdgeInsets.only(
+                    top: 8,
+                    bottom: 4,
+                    right: 8,
+                    left: 8,
+                  ),
+                  child: TextFormField(
+                    style: TextStyle(fontFamily: "SCDream"),
+                    expands: true,
+                    maxLines: null,
+                    controller: searchController,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 8,
+                      ),
+                      hintText: '검색',
+                      hintStyle: const TextStyle(fontSize: 12),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(0.0),
+                        borderSide: BorderSide(
+                          color: Colors.black,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(0.0),
+                        borderSide: BorderSide(
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                searchMatchFn: (item, searchValue) {
+                  return (item.value.toString().contains(searchValue));
+                },
+              ),
+              //This to clear the search value when you close the menu
+              onMenuStateChange: (isOpen) {
+                if (!isOpen) {
+                  searchController!.clear();
+                }
+              },
+            ),
+
+          ),
+        ]),
       ),
       body: Center(
         child: Container(
@@ -114,13 +318,13 @@ class _ListPage extends State<ListPage>{
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      body: data.isEmpty? getEmptyView() : getSliver()
+      body: listData.isEmpty? getEmptyView() : getSliver()
     );
   }
 
   @override
   void initState() {
     super.initState();
-    print(data); //release에서는 제거
+    print(listData); //release에서는 제거
   }
 }
