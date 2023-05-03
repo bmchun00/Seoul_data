@@ -225,7 +225,7 @@ class _ListPage extends State<ListPage>{
                 'Select Item',
                 style: TextStyle(
                   fontSize: 14,
-                  color: Theme.of(context).hintColor,
+                  color: Colors.black,
                 ),
               ),
               items: districts

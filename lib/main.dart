@@ -202,7 +202,7 @@ class _MainPage extends State<MainPage>{
                         'Select Item',
                         style: TextStyle(
                           fontSize: 14,
-                          color: Theme.of(context).hintColor,
+                          color: Colors.black,
                         ),
                       ),
                       items: districts
