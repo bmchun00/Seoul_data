@@ -51,6 +51,9 @@ List<dynamic> fixedData = [];
 bool _onload = false;
 
 List<dynamic> sortDataWithParams(String code, String location, List<dynamic> data){
+  if(location=='전체'){
+    location='ALL';
+  }
   location = location.substring(0,3);
   List<dynamic> sortedList = [];
   bool codeVerify = false;
@@ -117,12 +120,14 @@ class _MainPage extends State<MainPage>{
 
 
   List<Widget> getRandomCard(int times){
+    DateTime today = DateTime.now();
+    int seed = today.day + today.year + today.month;
     if(data.isEmpty){
       return [Text("")];
     }
     List<Widget> toRet = [];
     for(int i = 0; i<times; i++){
-      int key = Random().nextInt(data.length);
+      int key = Random(seed+i).nextInt(data.length);
       Container con = Container(
         child: Card(
             shape: RoundedRectangleBorder(),
