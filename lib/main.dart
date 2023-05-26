@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:wbex2/pageRouteAnimation.dart';
+import 'package:wbex2/startPage.dart';
 import 'detailPage.dart';
 import 'listPage.dart';
 import 'package:http/http.dart' as http;
@@ -93,7 +94,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: white,
       ),
-      home: MainPage(),
+      home: StartPage(),
     );
   }
 }
@@ -197,7 +198,7 @@ class _MainPage extends State<MainPage>{
                     DropdownButtonHideUnderline(
                       child: DropdownButton2(
                         buttonStyleData: ButtonStyleData(
-                          height: 30,
+                          height: 20,
                           width: 110,
                           padding: const EdgeInsets.only(left: 16, right: 16),
 
@@ -220,6 +221,7 @@ class _MainPage extends State<MainPage>{
                             style: const TextStyle(
                               fontSize: 14,
                               fontFamily: "SCDream",
+                              color: Colors.black
                             ),
                           ),
                         ))
@@ -244,7 +246,7 @@ class _MainPage extends State<MainPage>{
                             height: 50,
                             padding: const EdgeInsets.only(
                               top: 8,
-                              bottom: 4,
+                              bottom: 0,
                               right: 8,
                               left: 8,
                             ),
@@ -292,8 +294,17 @@ class _MainPage extends State<MainPage>{
                     Expanded(child: Text('')),
                   ],
                 ),
-                SizedBox(height: 10,),
+                Row(
+                  children: [
+                    SizedBox(width: 16,),
+                    Text(userName+" 님 ", style: TextStyle(fontFamily: "SCDream", color: Colors.black, fontSize: 14),),
+                    InkWell(onTap: (){
 
+                    }, child: Icon(Icons.refresh, size: 15,)),
+                    Expanded(child: Text(''))
+                  ],
+                ),
+                SizedBox(height: 10,)
               ],
             ),
           ),
@@ -314,6 +325,7 @@ class _MainPage extends State<MainPage>{
                       children: [
                         Row(),
                         Icon(categoryList[index]['categoryIcon'], color: Colors.black, size: 30,),
+                        SizedBox(height: 5,),
                         Text(categoryList[index]['categoryName'], style: TextStyle(fontFamily: "SCDream", color: Colors.black, fontSize: 10),),
                       ],
                     ),
@@ -343,7 +355,7 @@ class _MainPage extends State<MainPage>{
             child: Row(
               children: [
                 Icon(Icons.pin_drop_outlined, color: Colors.black, size: 23,),
-                Text(" 내 주변 (아직 미구?현)", style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: "SCDream"),)
+                Text(" 내 주변 (아직 미구현)", style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: "SCDream"),)
               ],
             ),
           ),

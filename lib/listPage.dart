@@ -105,18 +105,10 @@ class _ListPage extends State<ListPage>{
                     height: 30,
                     width: 120,
                     padding: const EdgeInsets.only(left: 0, right: 40),
-
                   ),
                   alignment: Alignment.center,
                   style: TextStyle(fontFamily: "SCDream"),
                   isExpanded: true,
-                  hint: Text(
-                    'Select Item',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context).hintColor,
-                    ),
-                  ),
                   items: districts
                       .map((item) => DropdownMenuItem(
                     value: item,
@@ -125,6 +117,7 @@ class _ListPage extends State<ListPage>{
                       style: const TextStyle(
                         fontSize: 14,
                         fontFamily: "SCDream",
+                        color: Colors.black
                       ),
                     ),
                   ))
@@ -221,13 +214,6 @@ class _ListPage extends State<ListPage>{
               alignment: Alignment.center,
               style: TextStyle(fontFamily: "SCDream"),
               isExpanded: true,
-              hint: Text(
-                'Select Item',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.black,
-                ),
-              ),
               items: districts
                   .map((item) => DropdownMenuItem(
                 value: item,
@@ -236,6 +222,7 @@ class _ListPage extends State<ListPage>{
                   style: const TextStyle(
                     fontSize: 14,
                     fontFamily: "SCDream",
+                    color: Colors.black
                   ),
                 ),
               ))
