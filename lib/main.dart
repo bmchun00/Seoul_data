@@ -188,106 +188,111 @@ class _MainPage extends State<MainPage>{
             child: Column(
               children: [
                 SizedBox(height: 40,),
-                Text("SEOUL BARGAIN", style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Jeju', fontSize: 25),),
+                Text("설렘", style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Jeju', fontSize: 25),),
                 SizedBox(height: 5,),
-                Text("Find the perfect price", style: TextStyle(fontWeight: FontWeight.w200, fontFamily: 'Jeju', fontSize: 15),),
-                SizedBox(height: 5,),
-                DropdownButtonHideUnderline(
-                    child: DropdownButton2(
-                      buttonStyleData: ButtonStyleData(
-                        height: 30,
-                        width: 110,
-                        padding: const EdgeInsets.only(left: 16, right: 16),
+                Text("서울시의 착한 가격 업소", style: TextStyle(fontWeight: FontWeight.w200, fontFamily: 'Jeju', fontSize: 15),),
+                SizedBox(height: 20,),
+                Row(
+                  children: [
+                    DropdownButtonHideUnderline(
+                      child: DropdownButton2(
+                        buttonStyleData: ButtonStyleData(
+                          height: 30,
+                          width: 110,
+                          padding: const EdgeInsets.only(left: 16, right: 16),
 
-                      ),
-                      alignment: Alignment.center,
-                      style: TextStyle(fontFamily: "SCDream"),
-                      isExpanded: true,
-                      hint: Text(
-                        'Select Item',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.black,
                         ),
-                      ),
-                      items: districts
-                          .map((item) => DropdownMenuItem(
-                        value: item,
-                        child: Text(
-                          item,
-                          style: const TextStyle(
+                        alignment: Alignment.center,
+                        style: TextStyle(fontFamily: "SCDream"),
+                        isExpanded: true,
+                        hint: Text(
+                          'Select Item',
+                          style: TextStyle(
                             fontSize: 14,
-                            fontFamily: "SCDream",
+                            color: Colors.black,
                           ),
                         ),
-                      ))
-                          .toList(),
-                      value: userLocation,
-                      onChanged: (value) {
-                        setState(() {
-                          userLocation = value as String;
-                          data = sortDataWithParams('000', userLocation == "전체" ? "ALL" : userLocation, fixedData);
-                        });
-                      },
-                      dropdownStyleData: const DropdownStyleData(
-                        maxHeight: 200,
-                      ),
-                      menuItemStyleData: const MenuItemStyleData(
-                        height: 40,
-                      ),
-                      dropdownSearchData: DropdownSearchData(
-                        searchController: searchController,
-                        searchInnerWidgetHeight: 50,
-                        searchInnerWidget: Container(
-                          height: 50,
-                          padding: const EdgeInsets.only(
-                            top: 8,
-                            bottom: 4,
-                            right: 8,
-                            left: 8,
+                        items: districts
+                            .map((item) => DropdownMenuItem(
+                          value: item,
+                          child: Text(
+                            item,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontFamily: "SCDream",
+                            ),
                           ),
-                          child: TextFormField(
-                            style: TextStyle(fontFamily: "SCDream"),
-                            expands: true,
-                            maxLines: null,
-                            controller: searchController,
-                            decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 8,
-                              ),
-                              hintText: '검색',
-                              hintStyle: const TextStyle(fontSize: 12),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(0.0),
-                                borderSide: BorderSide(
-                                  color: Colors.black,
+                        ))
+                            .toList(),
+                        value: userLocation,
+                        onChanged: (value) {
+                          setState(() {
+                            userLocation = value as String;
+                            data = sortDataWithParams('000', userLocation == "전체" ? "ALL" : userLocation, fixedData);
+                          });
+                        },
+                        dropdownStyleData: const DropdownStyleData(
+                          maxHeight: 200,
+                        ),
+                        menuItemStyleData: const MenuItemStyleData(
+                          height: 40,
+                        ),
+                        dropdownSearchData: DropdownSearchData(
+                          searchController: searchController,
+                          searchInnerWidgetHeight: 50,
+                          searchInnerWidget: Container(
+                            height: 50,
+                            padding: const EdgeInsets.only(
+                              top: 8,
+                              bottom: 4,
+                              right: 8,
+                              left: 8,
+                            ),
+                            child: TextFormField(
+                              style: TextStyle(fontFamily: "SCDream"),
+                              expands: true,
+                              maxLines: null,
+                              controller: searchController,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 8,
                                 ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(0.0),
-                                borderSide: BorderSide(
-                                  color: Colors.grey,
+                                hintText: '검색',
+                                hintStyle: const TextStyle(fontSize: 12),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(0.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(0.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
+                          searchMatchFn: (item, searchValue) {
+                            return (item.value.toString().contains(searchValue));
+                          },
                         ),
-                        searchMatchFn: (item, searchValue) {
-                          return (item.value.toString().contains(searchValue));
+                        //This to clear the search value when you close the menu
+                        onMenuStateChange: (isOpen) {
+                          if (!isOpen) {
+                            searchController!.clear();
+                          }
                         },
                       ),
-                      //This to clear the search value when you close the menu
-                      onMenuStateChange: (isOpen) {
-                        if (!isOpen) {
-                          searchController!.clear();
-                        }
-                      },
-                    ),
 
+                    ),
+                    Expanded(child: Text('')),
+                  ],
                 ),
-                SizedBox(height: 30,),
+                SizedBox(height: 10,),
 
               ],
             ),
