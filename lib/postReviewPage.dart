@@ -58,7 +58,7 @@ class _PostReviewPage extends State<PostReviewPage>{
     String imgUrl = await putImageData();
     String content = contentController!.value.text;
 
-    await db.collection("comments").add({'photo' : imgUrl, 'userName' : userName, 'time' :Timestamp.fromDate(DateTime.now()), 'content' : content, 'storeId' : storeId, 'userLocation' : "성북구"}).then((DocumentReference doc) =>
+    await db.collection("comments").add({'photo' : imgUrl, 'userName' : userName, 'time' :Timestamp.fromDate(DateTime.now()), 'content' : content, 'storeId' : storeId, 'userLocation' : userLocation}).then((DocumentReference doc) =>
         print('DocumentSnapshot added with ID: ${doc.id}'));
     context.loaderOverlay.hide();
     Navigator.of(context).pop();

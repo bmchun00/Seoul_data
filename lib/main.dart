@@ -10,8 +10,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 
-String userName="하얀구름095";
-String userLocation="성북구";
+String userName="하얀구름95";
+String userLocation="전체";
 
 final districts = ['전체','강남구','강동구','강북구','강서구','관악구','광진구','구로구','금천구','노원구','도봉구','동대문구','동작구','마포구','서대문구','서초구','성동구','성북구','송파구','양천구','영등포구','용산구','은평구','종로구','중구','중랑구'];
 
@@ -299,7 +299,7 @@ class _MainPage extends State<MainPage>{
                     SizedBox(width: 16,),
                     Text(userName+" 님 ", style: TextStyle(fontFamily: "SCDream", color: Colors.black, fontSize: 14),),
                     InkWell(onTap: (){
-
+                      Navigator.of(context).pushReplacement(fadeRoute(StartPage(), 200));
                     }, child: Icon(Icons.refresh, size: 15,)),
                     Expanded(child: Text(''))
                   ],
@@ -339,7 +339,7 @@ class _MainPage extends State<MainPage>{
             child: Row(
               children: [
                 Icon(Icons.stars_sharp, color: Colors.black, size: 23,),
-                Text(" 오늘의 추천", style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: "SCDream"),)
+                Text(" 오늘의 PICK", style: TextStyle(fontSize: 20, color: Colors.black, fontFamily: "SCDream"),)
               ],
             ),
           ),

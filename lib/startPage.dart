@@ -1,5 +1,7 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
+import 'dart:math';
 
+import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:wbex2/pageRouteAnimation.dart';
 import 'main.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +16,15 @@ class _StartPage extends State<StartPage>{
   void initState() {
     searchController = TextEditingController();
     userNameController = TextEditingController();
+    userNameController!.text = userName;
     super.initState();
+  }
+  String getRandomName(){
+    List names=[
+      "빨강", "노랑", "주황", "파랑", "초록", "구름", "하얀", "곰돌", "사과", "식초", "이불", "하늘", "구두", "검정", "이름", "나비"
+    ];
+    String toret = names[Random().nextInt(names.length)]+names[Random().nextInt(names.length)]+Random().nextInt(100).toString();
+    return toret;
   }
 
   @override
@@ -29,7 +39,7 @@ class _StartPage extends State<StartPage>{
             Text("설렘", style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Jeju', fontSize: 25),),
             SizedBox(height: 5,),
             Text("서울시의 착한 가격 업소", style: TextStyle(fontWeight: FontWeight.w200, fontFamily: 'Jeju', fontSize: 15),),
-            SizedBox(height: 30,),
+            SizedBox(height: 40,),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -124,10 +134,43 @@ class _StartPage extends State<StartPage>{
                 ),
               ],
             ),
-            Container(
-              width: 120,
-              child: TextField(),
-            )
+            SizedBox(height: 10,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  width: 80,
+                  child: TextField(
+                    controller: userNameController,
+                    style: TextStyle(
+                      fontFamily: "SCDream",
+                      fontSize: 14,
+                    ),
+                    decoration: InputDecoration(
+                      isDense: true,
+                      contentPadding: EdgeInsets.all(5),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10,),
+                InkWell(
+                  onTap: (){
+                    String tmp = getRandomName();
+                    userNameController!.text = tmp;
+                  },
+                  child: Icon(Icons.refresh, size: 17,),
+                )
+              ],
+            ),
+            SizedBox(height: 40,),
+            InkWell(
+              child: Icon(Icons.arrow_forward),
+              onTap: (){
+                userName = userNameController!.text;
+                Navigator.of(context).pushReplacement(fadeRoute(MainPage(),200));
+              },
+            ),
           ],
         ),
       ),
